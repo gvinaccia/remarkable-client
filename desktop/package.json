@@ -1,0 +1,20 @@
+{
+  "name": "remarkable-client",
+  "version": "1.0.0",
+  "description": "Unoffficial linux client for reMarkable",
+  "main": "index.js",
+  "author": "Giovanni Vinaccia <vinaccia.giovanni@gmail.com>",
+  "license": "MIT",
+  "private": true,
+  "scripts": {
+    "prebuild": "ncp package.json ../dist/package.json",
+    "build": "../node_modules/.bin/tsc -p .",
+    "start": "yarn run build && electron ../dist"
+  },
+  "devDependencies": {
+    "concurrently": "^3.5.1",
+    "electron": "^2.0.0",
+    "electron-builder": "^20.11.1",
+    "ncp": "^2.0.0"
+  }
+}
