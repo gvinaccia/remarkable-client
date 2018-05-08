@@ -2,6 +2,7 @@ import { app, BrowserWindow } from 'electron';
 import { join, resolve } from 'path';
 import { format } from 'url';
 import * as fs from 'graceful-fs';
+import { Client } from './api/Client';
 
 let win: BrowserWindow;
 
@@ -13,11 +14,13 @@ if (!fs.existsSync(secretPath)) {
   process.exit(1);
 }
 
-const secret = fs.readFileSync(secretPath, 'utf-8');
+const secret = fs.readFileSync(secretPath, { encoding: 'utf-8' }).trim();
 
-console.log(secret);
+app.once('ready', () => {
 
-app.on('ready', () => {
+  const client = new Client(secret);
+
+  client.refreshToken();
 
   win = new BrowserWindow({
     webPreferences: {
@@ -32,4 +35,7 @@ app.on('ready', () => {
     protocol: 'file',
     pathname: join(__dirname, 'index.html'),
   }));
+
+  win.show();
+
 });
