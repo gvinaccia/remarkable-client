@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { IpcService } from './electron';
 
 @Component({
   selector: 'app-root',
@@ -6,5 +7,9 @@ import { Component } from '@angular/core';
   styleUrls: ['./app.component.sass']
 })
 export class AppComponent {
-  title = 'app';
+
+  constructor(private ipc: IpcService) {
+    ipc.send('ping');
+  }
+
 }
