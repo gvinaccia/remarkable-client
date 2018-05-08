@@ -1,20 +1,26 @@
 {
   "name": "remarkable-client",
   "version": "1.0.0",
-  "description": "Unoffficial linux client for reMarkable",
+  "description": "Unoffficial client for reMarkable",
   "main": "index.js",
   "author": "Giovanni Vinaccia <vinaccia.giovanni@gmail.com>",
   "license": "MIT",
   "private": true,
   "scripts": {
-    "prebuild": "ncp package.json ../dist/package.json",
+    "copyfiles": "ncp package.json ../dist/package.json",
+    "prebuild": "yarn run copyfiles",
     "build": "../node_modules/.bin/tsc -p .",
     "start": "yarn run build && electron ../dist"
   },
   "devDependencies": {
+    "@types/graceful-fs": "^4.1.2",
     "concurrently": "^3.5.1",
     "electron": "^2.0.0",
     "electron-builder": "^20.11.1",
     "ncp": "^2.0.0"
+  },
+  "dependencies": {
+    "axios": "^0.18.0",
+    "graceful-fs": "^4.1.11"
   }
 }
