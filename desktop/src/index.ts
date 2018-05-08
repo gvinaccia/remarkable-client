@@ -16,11 +16,13 @@ if (!fs.existsSync(secretPath)) {
 
 const secret = fs.readFileSync(secretPath, { encoding: 'utf-8' }).trim();
 
-app.once('ready', () => {
+app.once('ready', async () => {
 
   const client = new Client(secret);
 
-  client.refreshToken();
+  client.init()
+    .then(() => client.listItems(), console.error)
+    .then(items => win.webContents.send('items', items));
 
   win = new BrowserWindow({
     webPreferences: {

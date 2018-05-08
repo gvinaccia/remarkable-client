@@ -8,8 +8,10 @@ import { IpcService } from './electron';
 })
 export class AppComponent {
 
+  items = [];
+
   constructor(private ipc: IpcService) {
-    ipc.send('ping');
+    ipc.on$('items').subscribe(v => this.items = v);
   }
 
 }
