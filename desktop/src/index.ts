@@ -18,11 +18,11 @@ const secret = fs.readFileSync(secretPath, { encoding: 'utf-8' }).trim();
 
 app.once('ready', async () => {
 
-  const client = new Client(secret);
+  // const client = new Client(secret);
 
-  client.init()
-    .then(() => client.listItems(), console.error)
-    .then(items => win.webContents.send('items', items));
+  // client.init()
+  //  .then(() => client.listItems(), console.error)
+  //  .then(items => win.webContents.send('items', items));
 
   win = new BrowserWindow({
     webPreferences: {
