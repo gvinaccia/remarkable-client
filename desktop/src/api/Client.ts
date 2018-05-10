@@ -2,8 +2,8 @@ import axios from 'axios';
 
 export class Client {
 
-  private apiUrl: string;
-  private token: string;
+  private apiUrl = '';
+  private token = '';
 
   constructor(private secret: string) { }
 
