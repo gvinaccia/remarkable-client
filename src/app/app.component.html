@@ -1,8 +1,25 @@
-<h1>Remarkable ss</h1>
+<mat-sidenav-container fullscreen>
+  <mat-sidenav #start [opened]="true">
 
-<ul>
-  <li *ngFor="let item of items">
-    {{ item.VissibleName }}
-  </li>
-</ul>
-<router-outlet></router-outlet>
+    <ul>
+      <li>ciao</li>
+      <li>ciao</li>
+      <li>ciao</li>
+    </ul>
+
+  </mat-sidenav>
+
+  <mat-sidenav-content>
+
+  <div>
+
+    <main>
+      <h1>blabla</h1>
+      <router-outlet></router-outlet>
+    </main>
+
+  </div>
+
+  </mat-sidenav-content>
+
+</mat-sidenav-container>
