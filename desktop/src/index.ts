@@ -13,7 +13,7 @@ const secretPath = join(configPath, '.token');
 if (!fs.existsSync(secretPath)) {
   process.exit(1);
 }
-
+require('electron-reload')(__dirname);
 const secret = fs.readFileSync(secretPath, { encoding: 'utf-8' }).trim();
 
 app.once('ready', async () => {

@@ -17,6 +17,7 @@
     "concurrently": "^3.5.1",
     "electron": "^2.0.0",
     "electron-builder": "^20.11.1",
+    "electron-reload": "^1.2.2",
     "ncp": "^2.0.0"
   },
   "dependencies": {
