@@ -1,5 +1,5 @@
 <mat-sidenav-container fullscreen>
-  <mat-sidenav #start [opened]="true">
+  <mat-sidenav #start [opened]="true" mode="side">
 
     <ul>
       <li>ciao</li>
@@ -11,14 +11,12 @@
 
   <mat-sidenav-content>
 
-  <div>
+    <mat-toolbar color="primary"></mat-toolbar>
 
     <main>
       <h1>blabla</h1>
       <router-outlet></router-outlet>
     </main>
-
-  </div>
 
   </mat-sidenav-content>
 

@@ -13,7 +13,12 @@ const secretPath = join(configPath, '.token');
 if (!fs.existsSync(secretPath)) {
   process.exit(1);
 }
-require('electron-reload')(__dirname);
+
+require('electron-reload')(__dirname, {
+  awaitWriteFinish: true,
+  electron: join(__dirname, '..', 'desktop', 'node_modules', '.bin', 'electron')
+});
+
 const secret = fs.readFileSync(secretPath, { encoding: 'utf-8' }).trim();
 
 app.once('ready', async () => {
@@ -25,19 +30,23 @@ app.once('ready', async () => {
   //  .then(items => win.webContents.send('items', items));
 
   win = new BrowserWindow({
+    show: false,
     webPreferences: {
+      webSecurity: false,
       nodeIntegration: false,
       preload: resolve(join(__dirname, 'preload.js'))
     }
   });
 
   win.on('show', () => win.webContents.toggleDevTools());
+  win.on('ready-to-show', () => win.show());
 
-  win.loadURL(format({
+  const rendererPath = format({
     protocol: 'file',
     pathname: join(__dirname, 'index.html'),
-  }));
+    slashes: true,
+  });
 
-  win.show();
+  win.loadURL(rendererPath);
 
 });
