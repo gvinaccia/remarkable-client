@@ -1,1 +1,12 @@
-/* You can add global styles to this file, and also import other style files */
+@import "~@angular/material/theming"
+
+@include mat-core()
+
+$rm-app-primary: mat-palette($mat-blue)
+$rm-app-accent: mat-palette($mat-deep-orange, A200, A100, A400)
+$rm-app-warn: mat-palette($mat-red)
+
+$rm-dark-theme: mat-dark-theme($rm-app-primary, $rm-app-accent, $rm-app-warn)
+
+.theme-default
+  @include angular-material-theme($rm-dark-theme)
