@@ -7,6 +7,26 @@ $rm-app-accent: mat-palette($mat-deep-orange, A200, A100, A400)
 $rm-app-warn: mat-palette($mat-red)
 
 $rm-dark-theme: mat-dark-theme($rm-app-primary, $rm-app-accent, $rm-app-warn)
+$rm-light-theme: mat-light-theme($rm-app-primary, $rm-app-accent, $rm-app-warn)
 
-.theme-default
+.theme-dark
   @include angular-material-theme($rm-dark-theme)
+
+.theme-light
+  @include angular-material-theme($rm-light-theme)
+
+
+body
+  margin: 0
+  position: relative
+  width: 100vw
+  height: 100vh
+
+app-root
+  position: absolute
+  top: 0
+  left: 0
+  bottom: 0
+  right: 0
+  display: flex
+  flex-direction: column

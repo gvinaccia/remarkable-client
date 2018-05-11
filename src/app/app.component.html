@@ -1,20 +1,58 @@
-<mat-sidenav-container fullscreen>
-  <mat-sidenav #start [opened]="true" mode="side">
+<mat-toolbar color="primary">
+  <button mat-icon-button (click)="sidenavOpened = !sidenavOpened">
+    <mat-icon>menu</mat-icon>
+  </button>
 
-    <ul>
-      <li>ciao</li>
-      <li>ciao</li>
-      <li>ciao</li>
-    </ul>
+  <span class="spacer"></span>
+
+  <button mat-button (click)="setTheme('light')">
+    light
+  </button>
+
+  <button mat-button (click)="setTheme('dark')">
+    dark
+  </button>
+
+</mat-toolbar>
+
+<mat-sidenav-container>
+
+  <mat-sidenav #start [opened]="sidenavOpened" mode="side">
+
+    <mat-list style="padding-right: 1rem">
+
+      <mat-list-item>
+        <mat-icon mat-list-icon>home</mat-icon>
+        <h4 mat-line>Dahsboard</h4>
+      </mat-list-item>
+
+      <mat-list-item>
+        <mat-icon mat-list-icon>bookmarks</mat-icon>
+        <h4 mat-line>Bookmarks</h4>
+      </mat-list-item>
+
+      <mat-list-item>
+        <mat-icon mat-list-icon>note</mat-icon>
+        <h4 mat-line>Notebooks</h4>
+      </mat-list-item>
+
+      <mat-list-item>
+        <mat-icon mat-list-icon>file_copy</mat-icon>
+        <h4 mat-line>Documents</h4>
+      </mat-list-item>
+
+      <mat-list-item>
+        <mat-icon mat-list-icon>book</mat-icon>
+        <h4 mat-line>Books</h4>
+      </mat-list-item>
+
+    </mat-list>
 
   </mat-sidenav>
 
   <mat-sidenav-content>
 
-    <mat-toolbar color="primary"></mat-toolbar>
-
     <main>
-      <h1>blabla</h1>
       <router-outlet></router-outlet>
     </main>
 
