@@ -1,5 +1,4 @@
 import { Component } from '@angular/core';
-import { IpcService } from './electron';
 
 @Component({
   selector: 'app-root',
@@ -10,12 +9,7 @@ export class AppComponent {
 
   sidenavOpened = true;
 
-  items = [];
-
-  constructor(private ipc: IpcService) {
-    ipc.on$('items').subscribe(v => this.items = v);
-  }
-
+  // noinspection JSMethodCanBeStatic
   setTheme(name: string) {
     document.body.classList.remove('theme-dark');
     document.body.classList.remove('theme-light');

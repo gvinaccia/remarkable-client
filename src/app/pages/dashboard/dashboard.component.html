@@ -1,1 +1,8 @@
-component version
+<section>
+  <ol>
+    <li *ngFor="let item of items$ | async">
+      <mat-icon>{{ item.type === 'DocumentType' ? 'description' : 'folder' }}</mat-icon>
+      {{ item.name }}
+    </li>
+  </ol>
+</section>
