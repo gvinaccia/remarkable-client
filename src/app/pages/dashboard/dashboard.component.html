@@ -1,8 +1,7 @@
 <section>
-  <ol>
-    <li *ngFor="let item of items$ | async">
-      <mat-icon>{{ item.type === 'DocumentType' ? 'description' : 'folder' }}</mat-icon>
-      {{ item.name }}
-    </li>
-  </ol>
+  <button (click)="currentNode.next(undefined)">root</button>
+
+  <app-file-browser [items]="items$ | async"
+                    (selected)="onNodeSelected($event)"></app-file-browser>
+
 </section>

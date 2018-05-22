@@ -23,4 +23,7 @@ export class StorageItem {
   id: StorageItemId;
   name: string;
   type: StorageItemType;
+  currentPage: number;
+  isBookmarked: boolean;
+  parentId: StorageItemId;
 }

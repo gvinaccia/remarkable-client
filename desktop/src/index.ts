@@ -1,9 +1,10 @@
-import { app, BrowserWindow, ipcMain } from 'electron';
+import { app, BrowserWindow, ipcMain, IpcMessageEvent } from 'electron';
 import { join, resolve } from 'path';
 import { format } from 'url';
 import * as fs from 'graceful-fs';
+
 import { Client } from './api/Client';
-import IpcMessageEvent = Electron.IpcMessageEvent;
+import { Storage } from './Storage';
 
 let win: BrowserWindow;
 
@@ -24,7 +25,14 @@ const secret = fs.readFileSync(secretPath, { encoding: 'utf-8' }).trim();
 
 app.once('ready', async () => {
 
+  const storagePath = join(configPath, 'storage');
+
+  if (! fs.existsSync(storagePath)) {
+    fs.mkdirSync(storagePath);
+  }
+
   const client = new Client(secret);
+  const storage = new Storage(storagePath);
 
   win = new BrowserWindow({
     show: false,
@@ -49,6 +57,12 @@ app.once('ready', async () => {
   ipcMain.on('load_items', (e: IpcMessageEvent) => {
     client.init()
       .then(() => client.listItems(), console.error)
-      .then(items => e.sender.send('items', items));
+      .then(items => {
+        e.sender.send('items', items);
+        return items;
+      })
+      .then(items => {
+        storage.sync(items);
+      });
   });
 });

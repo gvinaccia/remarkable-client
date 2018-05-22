@@ -8,11 +8,13 @@ import { MaterialModule } from './material.module';
 import { AppComponent } from './app.component';
 
 import * as fromPages from './pages';
+import * as fromComponents from './components';
 
 @NgModule({
   declarations: [
     AppComponent,
     ...fromPages.all,
+    ...fromComponents.all,
   ],
   imports: [
     BrowserModule,

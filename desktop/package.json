@@ -8,7 +8,7 @@
   "private": true,
   "scripts": {
     "copyfiles": "ncp package.json ../dist/package.json",
-    "prebuild": "yarn run copyfiles",
+    "prebuild": "yarn run copyfiles && cd ../dist && yarn install --prod && cd ../desktop",
     "build": "../node_modules/.bin/tsc -p .",
     "start": "yarn run build && cd ../dist && ELECTRON_DISABLE_SECURITY_WARNINGS=true ../desktop/node_modules/.bin/electron ."
   },
@@ -21,7 +21,9 @@
     "ncp": "^2.0.0"
   },
   "dependencies": {
+    "@types/download": "^6.2.2",
     "axios": "^0.18.0",
+    "download": "^7.0.0",
     "graceful-fs": "^4.1.11"
   }
 }

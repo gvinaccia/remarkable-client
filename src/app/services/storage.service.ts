@@ -1,5 +1,7 @@
 import { Injectable } from '@angular/core';
-import { Observable, BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
+
 import { RawStorageItem, StorageItem } from '../models';
 import { IpcService } from '../electron';
 
@@ -23,12 +25,21 @@ export class StorageService {
     return this.items.asObservable();
   }
 
+  getChildren(node?: StorageItem): Observable<StorageItem[]> {
+    return this.items$.pipe(
+      map(items => items.filter(item => item.parentId === (node ? node.id : ''))),
+    );
+  }
+
   // noinspection JSMethodCanBeStatic
   private normalizeRawItem(item: RawStorageItem): StorageItem {
     return {
       id: item.ID,
       name: item.VissibleName,
       type: item.Type,
+      currentPage: item.CurrentPage,
+      isBookmarked: item.Bookmarked,
+      parentId: item.Parent,
     };
   }
 }
