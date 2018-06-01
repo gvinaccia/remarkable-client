@@ -19,8 +19,8 @@ export class Storage {
 
   constructor(private basePath: string) { }
 
-  sync(items: RawStorageItem[]): void {
-    Promise.all(items.map(item => download(item.BlobURLGet, this.basePath)))
+  sync(items: RawStorageItem[]): Promise<void> {
+    return Promise.all(items.map(item => download(item.BlobURLGet, this.basePath)))
       .then(() => console.log('All Files Downloaded'), console.error);
   }
 

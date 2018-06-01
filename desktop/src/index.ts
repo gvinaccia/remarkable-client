@@ -5,6 +5,7 @@ import * as fs from 'graceful-fs';
 
 import { Client } from './api/Client';
 import { Storage } from './Storage';
+import { IpcMessages } from './shared';
 
 let win: BrowserWindow;
 
@@ -48,21 +49,24 @@ app.once('ready', async () => {
 
   const rendererPath = format({
     protocol: 'file',
-    pathname: join(__dirname, 'index.html'),
+    pathname: join(__dirname, '..', '..', 'index.html'),
     slashes: true,
   });
 
   win.loadURL(rendererPath);
 
-  ipcMain.on('load_items', (e: IpcMessageEvent) => {
+  ipcMain.on(IpcMessages.LOAD_ITEMS, (e: IpcMessageEvent) => {
     client.init()
       .then(() => client.listItems(), console.error)
       .then(items => {
-        e.sender.send('items', items);
+        e.sender.send(IpcMessages.ITEMS, items);
         return items;
       })
       .then(items => {
-        storage.sync(items);
+        storage.sync(items)
+          .then(() => {
+            e.sender.send(IpcMessages.ITEMS_DOWNLOADED);
+          });
       });
   });
 });
