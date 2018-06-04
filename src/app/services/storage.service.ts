@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
-import { RawStorageItem, StorageItem } from '../models';
+import { RawStorageItem, StorageItem, StorageItemId } from '../models';
 import { IpcService } from '../electron';
 import { IpcMessages } from '../shared';
 
@@ -30,6 +30,11 @@ export class StorageService {
     return this.items$.pipe(
       map(items => items.filter(item => item.parentId === (node ? node.id : ''))),
     );
+  }
+
+  getOne(itemId: StorageItemId): Observable<any> {
+    this.ipc.send(IpcMessages.GET_FULL_ITEM, itemId);
+    return this.ipc.on$(IpcMessages.ITEM_FULL);
   }
 
   // noinspection JSMethodCanBeStatic

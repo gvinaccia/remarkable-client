@@ -7,6 +7,10 @@ const routes: Routes = [
   {
     path: '',
     component: fromPages.DashboardComponent
+  },
+  {
+    path: 'document/:id',
+    component: fromPages.DocumentComponent
   }
 ];
 

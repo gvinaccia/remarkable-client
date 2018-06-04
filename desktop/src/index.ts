@@ -69,4 +69,9 @@ app.once('ready', async () => {
           });
       });
   });
+
+  ipcMain.on(IpcMessages.GET_FULL_ITEM, (e: IpcMessageEvent, itemId: string) => {
+    storage.getItem(itemId).then(r => e.sender.send(IpcMessages.ITEM_FULL, r));
+  });
+
 });

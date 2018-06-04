@@ -24,6 +24,8 @@
     "@types/download": "^6.2.2",
     "axios": "^0.18.0",
     "download": "^7.0.0",
-    "graceful-fs": "^4.1.11"
+    "graceful-fs": "^4.1.11",
+    "lines-parser": "^0.0.4",
+    "unzipper": "^0.8.14"
   }
 }

@@ -4,6 +4,7 @@ import { map, switchMap } from 'rxjs/operators';
 
 import { StorageService } from '../../services';
 import { StorageItem } from '../../models';
+import { Router } from '@angular/router';
 
 const sortByType = (a: StorageItem, b: StorageItem) => {
   if (a.type === b.type) {
@@ -23,7 +24,10 @@ export class DashboardComponent implements OnInit {
 
   currentNode = new BehaviorSubject<StorageItem|undefined>(undefined);
 
-  constructor(private storage: StorageService) { }
+  constructor(
+    private storage: StorageService,
+    private router: Router,
+  ) { }
 
   ngOnInit() {
     this.storage.init();
@@ -37,7 +41,8 @@ export class DashboardComponent implements OnInit {
     if (node.type === 'CollectionType') {
       this.currentNode.next(node);
     } else {
-      console.log(node);
+      // noinspection JSIgnoredPromiseFromCall
+      this.router.navigateByUrl(`document/${node.id}`);
     }
   }
 
