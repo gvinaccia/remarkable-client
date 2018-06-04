@@ -1771,9 +1771,9 @@ lcid@^1.0.0:
   dependencies:
     invert-kv "^1.0.0"
 
-lines-parser@0.0.5:
-  version "0.0.5"
-  resolved "https://registry.yarnpkg.com/lines-parser/-/lines-parser-0.0.5.tgz#5560dec220f9c4a9d0e2cd4b700177e7b8182d07"
+lines-parser@^0.0.6:
+  version "0.0.6"
+  resolved "https://registry.yarnpkg.com/lines-parser/-/lines-parser-0.0.6.tgz#9160506a1ab38491ea2701cd72623459fcea93d6"
   dependencies:
     canvas "^2.0.0-alpha.12"
 
