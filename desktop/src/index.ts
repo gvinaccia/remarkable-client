@@ -5,7 +5,7 @@ import * as fs from 'graceful-fs';
 
 import { Client } from './api/Client';
 import { Storage } from './Storage';
-import { IpcMessages } from './shared';
+import { Messages } from './shared';
 
 let win: BrowserWindow;
 
@@ -19,7 +19,7 @@ if (!fs.existsSync(secretPath)) {
 
 require('electron-reload')(__dirname, {
   awaitWriteFinish: true,
-  electron: join(__dirname, '..', 'desktop', 'node_modules', '.bin', 'electron')
+  electron: join(__dirname, '..', '..', 'node_modules', '.bin', 'electron')
 });
 
 const secret = fs.readFileSync(secretPath, { encoding: 'utf-8' }).trim();
@@ -55,23 +55,23 @@ app.once('ready', async () => {
 
   win.loadURL(rendererPath);
 
-  ipcMain.on(IpcMessages.LOAD_ITEMS, (e: IpcMessageEvent) => {
+  ipcMain.on(Messages.LOAD_ITEMS, (e: IpcMessageEvent) => {
     client.init()
       .then(() => client.listItems(), console.error)
       .then(items => {
-        e.sender.send(IpcMessages.ITEMS, items);
+        e.sender.send(Messages.ITEMS, items);
         return items;
       })
       .then(items => {
         storage.sync(items)
           .then(() => {
-            e.sender.send(IpcMessages.ITEMS_DOWNLOADED);
+            e.sender.send(Messages.ITEMS_DOWNLOADED);
           });
       });
   });
 
-  ipcMain.on(IpcMessages.GET_FULL_ITEM, (e: IpcMessageEvent, itemId: string) => {
-    storage.getItem(itemId).then(r => e.sender.send(IpcMessages.ITEM_FULL, r));
+  ipcMain.on(Messages.GET_FULL_ITEM, (e: IpcMessageEvent, itemId: string) => {
+    storage.getItem(itemId).then(r => e.sender.send(Messages.ITEM_FULL, r));
   });
 
 });

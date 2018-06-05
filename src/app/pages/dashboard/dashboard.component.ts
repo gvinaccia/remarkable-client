@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { map, switchMap } from 'rxjs/operators';
 
 import { StorageService } from '../../services';
-import { StorageItem } from '../../models';
-import { Router } from '@angular/router';
+import { StorageItem } from '../../shared';
 
 const sortByType = (a: StorageItem, b: StorageItem) => {
   if (a.type === b.type) {

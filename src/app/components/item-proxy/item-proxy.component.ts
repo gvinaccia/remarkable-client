@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { StorageItem } from '../../models';
+import { StorageItem } from '../../shared';
 
 @Component({
   selector: 'app-item-proxy',

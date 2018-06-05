@@ -1,1 +1,2 @@
-export * from './IpcMessages';
+export * from './messages';
+export * from './storage-item';

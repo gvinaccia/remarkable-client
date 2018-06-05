@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { StorageService } from '../../services';
 import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs';
 import { map, switchMap } from 'rxjs/operators';
+import { StorageService } from '../../services';
+import { Notebook } from '../../shared';
 
 @Component({
   selector: 'app-document',
@@ -11,8 +12,7 @@ import { map, switchMap } from 'rxjs/operators';
 })
 export class DocumentComponent implements OnInit {
 
-  pages$: Observable<any>;
-  document$: Observable<any>;
+  document$: Observable<Notebook>;
 
   constructor(
     private storage: StorageService,
@@ -24,8 +24,6 @@ export class DocumentComponent implements OnInit {
       map(p => p.id),
       switchMap(id => this.storage.getOne(id))
     );
-
-    this.pages$ = this.document$.pipe(map(d => d.pages));
   }
 
 }

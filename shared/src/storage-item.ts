@@ -4,7 +4,7 @@ export type DocumentType = 'DocumentType';
 export type CollectionType = 'CollectionType';
 export type StorageItemType = DocumentType | CollectionType;
 
-export class RawStorageItem {
+export interface RawStorageItem {
   ID: StorageItemId;
   Version: number;
   Message: string;
@@ -19,11 +19,15 @@ export class RawStorageItem {
   Parent: StorageItemId;
 }
 
-export class StorageItem {
+export interface StorageItem {
   id: StorageItemId;
   name: string;
   type: StorageItemType;
   currentPage: number;
   isBookmarked: boolean;
   parentId: StorageItemId;
+}
+
+export interface Notebook extends StorageItem {
+  pages?: { path: string; }[];
 }

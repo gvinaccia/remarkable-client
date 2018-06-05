@@ -1,0 +1,7 @@
+<h1>{{ document.name }}</h1>
+
+<div>
+  <figure *ngFor="let page of document.pages">
+    <img [src]="page.path">
+  </figure>
+</div>

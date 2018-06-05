@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { StorageItem } from '../../models';
+import { StorageItem } from '../../shared';
 
 @Component({
   selector: 'app-file-browser',

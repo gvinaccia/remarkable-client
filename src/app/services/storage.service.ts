@@ -1,10 +1,9 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { map, take, tap } from 'rxjs/operators';
 
-import { RawStorageItem, StorageItem, StorageItemId } from '../models';
+import { Messages, Notebook, RawStorageItem, StorageItem, StorageItemId } from '../shared';
 import { IpcService } from '../electron';
-import { IpcMessages } from '../shared';
 
 @Injectable({
   providedIn: 'root'
@@ -12,14 +11,17 @@ import { IpcMessages } from '../shared';
 export class StorageService {
 
   private items = new BehaviorSubject<StorageItem[]>([]);
+  private itemsById = new Map<string, StorageItem>();
 
   constructor(private ipc: IpcService) { }
 
   public init() {
-    this.ipc.on$(IpcMessages.ITEMS).subscribe((rawItems: RawStorageItem[]) => {
-      this.items.next(rawItems.map(this.normalizeRawItem));
+    this.ipc.on$(Messages.ITEMS).subscribe((rawItems: RawStorageItem[]) => {
+      const normalizedItems = rawItems.map(this.normalizeRawItem);
+      normalizedItems.forEach(item => this.itemsById.set(item.id, item));
+      this.items.next(normalizedItems);
     });
-    this.ipc.send(IpcMessages.LOAD_ITEMS);
+    this.ipc.send(Messages.LOAD_ITEMS);
   }
 
   get items$(): Observable<StorageItem[]> {
@@ -32,9 +34,18 @@ export class StorageService {
     );
   }
 
-  getOne(itemId: StorageItemId): Observable<any> {
-    this.ipc.send(IpcMessages.GET_FULL_ITEM, itemId);
-    return this.ipc.on$(IpcMessages.ITEM_FULL);
+  getOne(itemId: StorageItemId): Observable<Notebook> {
+    this.ipc.send(Messages.GET_FULL_ITEM, itemId);
+    return this.ipc.on$(Messages.ITEM_FULL).pipe(
+      take(1),
+      map(result => {
+        return {
+          ...this.itemsById.get(itemId),
+          pages: result.pages
+        };
+      }),
+      tap(console.log)
+    );
   }
 
   // noinspection JSMethodCanBeStatic
