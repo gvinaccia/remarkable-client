@@ -51,9 +51,7 @@ export class Storage {
           };
           const contentFilePath = path.join(outputPath, `${itemId}.content`);
 
-          const contentData = JSON.parse(fs.readFileSync(contentFilePath, 'utf-8'));
-
-          parsed.contentData = contentData;
+          parsed.contentData = JSON.parse(fs.readFileSync(contentFilePath, 'utf-8'));
 
           const linesFilePath = path.join(outputPath, `${itemId}.lines`);
 

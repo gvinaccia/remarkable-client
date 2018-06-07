@@ -1,8 +1,6 @@
 <h1>{{ document.name }}</h1>
 
-<div>
-  {{ document | json }}
-</div>
+<div>{{ document | json }}</div>
 
 <div>
   <figure *ngFor="let page of document.pages">

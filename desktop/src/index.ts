@@ -4,7 +4,7 @@ import { format } from 'url';
 import * as fs from 'graceful-fs';
 
 import { Client } from './api/Client';
-import { Storage } from './Storage';
+import { Storage } from './storage/Storage';
 import { Messages } from './shared';
 
 let win: BrowserWindow;
@@ -19,7 +19,7 @@ if (!fs.existsSync(secretPath)) {
 
 require('electron-reload')(__dirname, {
   awaitWriteFinish: true,
-  electron: join(__dirname, '..', '..', 'node_modules', '.bin', 'electron')
+  electron: app.getPath('exe'),
 });
 
 const secret = fs.readFileSync(secretPath, { encoding: 'utf-8' }).trim();
