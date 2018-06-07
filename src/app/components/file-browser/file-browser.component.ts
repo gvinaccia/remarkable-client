@@ -14,5 +14,9 @@ export class FileBrowserComponent {
   @Output()
   selected = new EventEmitter<StorageItem>();
 
+  log(item) {
+    console.log(item);
+  }
+
 }
 

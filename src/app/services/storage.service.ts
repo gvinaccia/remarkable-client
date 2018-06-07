@@ -41,7 +41,8 @@ export class StorageService {
       map(result => {
         return {
           ...this.itemsById.get(itemId),
-          pages: result.pages
+          pages: result.pages,
+          content: result.contentData,
         };
       }),
       tap(console.log)

@@ -45,7 +45,23 @@ export class Storage {
           path: outputPath
         }))
         .on('finish', () => {
+          const parsed = {
+            pages: [],
+            contentData: undefined,
+          };
+          const contentFilePath = path.join(outputPath, `${itemId}.content`);
+
+          const contentData = JSON.parse(fs.readFileSync(contentFilePath, 'utf-8'));
+
+          parsed.contentData = contentData;
+
           const linesFilePath = path.join(outputPath, `${itemId}.lines`);
+
+          if (! fs.existsSync(linesFilePath)) {
+            resolve(parsed);
+            return;
+          }
+
           const pagesPath = path.join(outputPath, 'pages');
           if (! fs.existsSync(pagesPath)) {
             fs.mkdirSync(pagesPath);
@@ -53,7 +69,7 @@ export class Storage {
 
           // parse lines file
           parse(linesFilePath, pagesPath)
-            .then((paths: {path: string}[]) => resolve({ pages: paths }));
+            .then((paths: {path: string}[]) => resolve({ ...parsed, pages: paths }));
         });
     });
 

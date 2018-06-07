@@ -1,1 +1,2 @@
-<app-document-show [document]="document$ | async"></app-document-show>
+<app-document-show *ngIf="document$ | async as doc"
+                   [document]="doc"></app-document-show>

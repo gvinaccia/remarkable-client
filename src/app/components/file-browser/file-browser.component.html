@@ -1,3 +1,5 @@
-<div *ngFor="let item of items" (click)="selected.emit(item)">
+<div *ngFor="let item of items">
+  <button (click)="selected.emit(item)">O</button>
+  <button (click)="log(item)">I</button>
   <app-item-proxy [item]="item"></app-item-proxy>
 </div>
