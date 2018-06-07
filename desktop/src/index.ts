@@ -17,10 +17,12 @@ if (!fs.existsSync(secretPath)) {
   process.exit(1);
 }
 
-require('electron-reload')(__dirname, {
-  awaitWriteFinish: true,
-  electron: app.getPath('exe'),
-});
+if (! (app as any).isPackaged) {
+  require('electron-reload')(join(__dirname, '..', '..'), {
+    awaitWriteFinish: true,
+    electron: app.getPath('exe'),
+  });
+}
 
 const secret = fs.readFileSync(secretPath, { encoding: 'utf-8' }).trim();
 
