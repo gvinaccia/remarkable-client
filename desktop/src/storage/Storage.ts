@@ -1,3 +1,5 @@
+import { RawContentData } from '../shared';
+
 const { parse } = require('lines-parser');
 const download = require('download');
 const fs = require('fs');
@@ -45,13 +47,12 @@ export class Storage {
           path: outputPath
         }))
         .on('finish', () => {
-          const parsed = {
+          const parsed: any = {
             pages: [],
-            contentData: undefined,
           };
           const contentFilePath = path.join(outputPath, `${itemId}.content`);
 
-          parsed.contentData = JSON.parse(fs.readFileSync(contentFilePath, 'utf-8'));
+          parsed.contentData = <RawContentData>JSON.parse(fs.readFileSync(contentFilePath, 'utf-8'));
 
           const linesFilePath = path.join(outputPath, `${itemId}.lines`);
 
@@ -70,6 +71,5 @@ export class Storage {
             .then((paths: {path: string}[]) => resolve({ ...parsed, pages: paths }));
         });
     });
-
   }
 }
