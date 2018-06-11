@@ -1,0 +1,17 @@
+appId: com.gvinaccia.remarkable-client
+productName: "reMarkable client"
+copyright: "Copyright © 2018 ${author}"
+directories:
+  output: release
+  app: dist
+  buildResources: build
+linux:
+  target:
+    target: AppImage
+    arch:
+      - "x64"
+  category: Office
+  desktop:
+    Name: 'reMarkable client'
+publish:
+  provider: github

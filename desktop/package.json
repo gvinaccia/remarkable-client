@@ -1,11 +1,10 @@
 {
   "name": "remarkable-client",
-  "version": "1.0.0",
-  "description": "Unoffficial client for reMarkable",
+  "version": "0.0.1",
+  "description": "Unoffficial client for reMarkable paper tablet",
   "main": "desktop/src/index.js",
   "author": "Giovanni Vinaccia <vinaccia.giovanni@gmail.com>",
   "license": "MIT",
-  "private": true,
   "scripts": {
     "copyfiles": "ncp package.json ../dist/package.json",
     "prebuild": "yarn run copyfiles && ln -s $(pwd)/node_modules ../dist/node_modules",
@@ -24,6 +23,7 @@
     "@types/download": "^6.2.2",
     "axios": "^0.18.0",
     "download": "^7.0.0",
+    "electron-updater": "^2.21.10",
     "graceful-fs": "^4.1.11",
     "lines-parser": "^0.0.8",
     "unzipper": "^0.8.14"

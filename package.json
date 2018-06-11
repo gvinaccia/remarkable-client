@@ -40,6 +40,7 @@
     "@types/node": "~6.0.60",
     "codelyzer": "^4.0.1",
     "concurrently": "^3.5.1",
+    "electron-builder": "^20.15.1",
     "electron-reload": "^1.2.2",
     "jasmine-core": "~2.8.0",
     "jasmine-spec-reporter": "~4.2.1",

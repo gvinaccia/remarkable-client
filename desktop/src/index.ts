@@ -1,4 +1,5 @@
 import { app, BrowserWindow, ipcMain, IpcMessageEvent } from 'electron';
+import { autoUpdater } from 'electron-updater';
 import { join, resolve } from 'path';
 import { format } from 'url';
 import * as fs from 'graceful-fs';
@@ -9,19 +10,33 @@ import { Messages } from './shared';
 
 let win: BrowserWindow;
 
+const inProduction =  (app as any).isPackaged;
+const inDevelopment = !inProduction;
 const configPath = app.getPath('userData');
-
 const secretPath = join(configPath, '.token');
 
 if (!fs.existsSync(secretPath)) {
   process.exit(1);
 }
 
-if (! (app as any).isPackaged) {
+if (inDevelopment) {
   require('electron-reload')(join(__dirname, '..', '..'), {
     awaitWriteFinish: true,
     electron: app.getPath('exe'),
   });
+}
+
+const shouldQuit = app.makeSingleInstance(() => {
+  if (win) {
+    if (win.isMinimized()) {
+      win.restore();
+    }
+    win.focus();
+  }
+});
+
+if (shouldQuit) {
+  app.quit();
 }
 
 const secret = fs.readFileSync(secretPath, { encoding: 'utf-8' }).trim();
@@ -32,6 +47,11 @@ app.once('ready', async () => {
 
   if (! fs.existsSync(storagePath)) {
     fs.mkdirSync(storagePath);
+  }
+
+  if (inProduction) {
+    // noinspection JSIgnoredPromiseFromCall
+    autoUpdater.checkForUpdatesAndNotify();
   }
 
   const client = new Client(secret);
