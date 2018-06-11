@@ -66,7 +66,9 @@ app.once('ready', async () => {
     }
   });
 
-  win.on('show', () => win.webContents.toggleDevTools());
+  if (inDevelopment) {
+    win.on('show', () => win.webContents.toggleDevTools());
+  }
   win.on('ready-to-show', () => win.show());
 
   const rendererPath = format({
