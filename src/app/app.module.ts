@@ -9,6 +9,7 @@ import { AppComponent } from './app.component';
 
 import * as fromPages from './pages';
 import * as fromComponents from './components';
+import * as fromGuards from './guards';
 
 @NgModule({
   declarations: [
@@ -23,7 +24,9 @@ import * as fromComponents from './components';
     AppRoutingModule,
     MaterialModule,
   ],
-  providers: [],
+  providers: [
+    ...fromGuards.all
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

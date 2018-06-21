@@ -2,15 +2,27 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
 import * as fromPages from './pages';
+import { DeviceRegisteredGuard } from './guards';
 
 const routes: Routes = [
   {
     path: '',
-    component: fromPages.DashboardComponent
+    component: fromPages.MainLayoutComponent,
+    canActivate: [ DeviceRegisteredGuard ],
+    children: [
+      {
+        path: '',
+        component: fromPages.DashboardComponent,
+      },
+      {
+        path: 'document/:id',
+        component: fromPages.DocumentComponent
+      },
+    ]
   },
   {
-    path: 'document/:id',
-    component: fromPages.DocumentComponent
+    path: 'register',
+    component: fromPages.RegisterDeviceComponent
   }
 ];
 

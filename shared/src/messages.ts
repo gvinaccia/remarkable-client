@@ -1,5 +1,6 @@
 export class Messages {
   // commands
+  static readonly GET_REGISTRATION_STATUS = 'get_registration_status';
   static readonly LOAD_ITEMS = 'load_items';
   static readonly GET_FULL_ITEM = 'get_item';
 

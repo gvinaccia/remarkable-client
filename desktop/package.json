@@ -21,8 +21,10 @@
   },
   "dependencies": {
     "@types/download": "^6.2.2",
+    "@types/electron-settings": "^3.1.1",
     "axios": "^0.18.0",
     "download": "^7.0.0",
+    "electron-settings": "^3.2.0",
     "electron-updater": "^2.21.10",
     "graceful-fs": "^4.1.11",
     "lines-parser": "^0.0.8",

@@ -1,5 +1,6 @@
 import { app, BrowserWindow, ipcMain, IpcMessageEvent } from 'electron';
 import { autoUpdater } from 'electron-updater';
+import * as settings from 'electron-settings';
 import { join, resolve } from 'path';
 import { format } from 'url';
 import * as fs from 'graceful-fs';
@@ -12,12 +13,8 @@ let win: BrowserWindow;
 
 const inProduction =  (app as any).isPackaged;
 const inDevelopment = !inProduction;
-const configPath = app.getPath('userData');
-const secretPath = join(configPath, '.token');
 
-if (!fs.existsSync(secretPath)) {
-  process.exit(1);
-}
+const configPath = app.getPath('userData');
 
 if (inDevelopment) {
   require('electron-reload')(join(__dirname, '..', '..'), {
@@ -39,9 +36,22 @@ if (shouldQuit) {
   app.quit();
 }
 
-const secret = fs.readFileSync(secretPath, { encoding: 'utf-8' }).trim();
-
 app.once('ready', async () => {
+
+  // gestione finestra
+  const winState = <{ bounds: any }>settings.get('window.main.state', {
+    bounds: {
+      height: 600,
+      width: 800,
+      x: undefined,
+      y: undefined
+    }
+  });
+
+
+
+
+
 
   const storagePath = join(configPath, 'storage');
 
@@ -54,10 +64,13 @@ app.once('ready', async () => {
     autoUpdater.checkForUpdatesAndNotify();
   }
 
+  const secret = settings.get('auth.token') as string;
+
   const client = new Client(secret);
   const storage = new Storage(storagePath);
 
   win = new BrowserWindow({
+    ...winState.bounds,
     show: false,
     webPreferences: {
       webSecurity: false,
@@ -70,14 +83,15 @@ app.once('ready', async () => {
     win.on('show', () => win.webContents.toggleDevTools());
   }
   win.on('ready-to-show', () => win.show());
-
-  const rendererPath = format({
-    protocol: 'file',
-    pathname: join(__dirname, '..', '..', 'index.html'),
-    slashes: true,
+  win.on('close', () => {
+    settings.set('window.main.state', {
+      bounds: win.getBounds() as any,
+    });
   });
 
-  win.loadURL(rendererPath);
+  ipcMain.on(Messages.GET_REGISTRATION_STATUS, (e: IpcMessageEvent, m: any) => {
+    e.sender.send(m.respondTo, { registered: false });
+  });
 
   ipcMain.on(Messages.LOAD_ITEMS, (e: IpcMessageEvent) => {
     client.init()
@@ -98,4 +112,12 @@ app.once('ready', async () => {
     storage.getItem(itemId).then(r => e.sender.send(Messages.ITEM_FULL, r));
   });
 
+  // show the window
+  const rendererPath = format({
+    protocol: 'file',
+    pathname: join(__dirname, '..', '..', 'index.html'),
+    slashes: true,
+  });
+
+  win.loadURL(rendererPath);
 });

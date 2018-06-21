@@ -22,6 +22,17 @@ export class IpcService {
     this.ipc.send(channel, ...args);
   }
 
+  query<T>(channel: string, payload = { }): Observable<T> {
+    return Observable.create(subscriber => {
+      const respondTo = channel + '_' + Math.random();
+      this.ipc.once(respondTo, (sender, response) => {
+        subscriber.next(response);
+        subscriber.complete();
+      });
+      this.send(channel, { ...payload, respondTo });
+    });
+  }
+
   public on(channel: string, listener: Function): void {
     this.ipc.on(channel, (...args) => {
       this.zone.run(() => listener(...args));

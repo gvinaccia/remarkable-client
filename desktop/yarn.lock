@@ -40,6 +40,12 @@
     "@types/got" "*"
     "@types/node" "*"
 
+"@types/electron-settings@^3.1.1":
+  version "3.1.1"
+  resolved "https://registry.yarnpkg.com/@types/electron-settings/-/electron-settings-3.1.1.tgz#e3f8246ee1a8fc66b08203792d09589df355c776"
+  dependencies:
+    "@types/node" "*"
+
 "@types/got@*":
   version "8.3.1"
   resolved "https://registry.yarnpkg.com/@types/got/-/got-8.3.1.tgz#823ded0ce469895be3d01553fec31ff86339ff9f"
@@ -550,6 +556,10 @@ clone-response@1.0.2:
   dependencies:
     mimic-response "^1.0.0"
 
+clone@^2.1.1:
+  version "2.1.1"
+  resolved "https://registry.yarnpkg.com/clone/-/clone-2.1.1.tgz#d217d1e961118e3ac9a4b8bba3285553bf647cdb"
+
 co@^4.6.0:
   version "4.6.0"
   resolved "https://registry.yarnpkg.com/co/-/co-4.6.0.tgz#6ea6bdf3d853ae54ccb8e47bfa0bf3f9031fb184"
@@ -993,6 +1003,13 @@ electron-reload@^1.2.2:
   resolved "https://registry.yarnpkg.com/electron-reload/-/electron-reload-1.2.2.tgz#621ddb443b9fbba1c5e29a5fdd683322b5c42284"
   dependencies:
     chokidar "^1.5.1"
+
+electron-settings@^3.2.0:
+  version "3.2.0"
+  resolved "https://registry.yarnpkg.com/electron-settings/-/electron-settings-3.2.0.tgz#01461e153f95b6f18adbe0c360c70898eb0f43c3"
+  dependencies:
+    clone "^2.1.1"
+    jsonfile "^4.0.0"
 
 electron-updater@^2.21.10:
   version "2.21.10"

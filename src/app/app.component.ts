@@ -7,13 +7,5 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
 
-  sidenavOpened = true;
-
-  // noinspection JSMethodCanBeStatic
-  setTheme(name: string) {
-    document.body.classList.remove('theme-dark');
-    document.body.classList.remove('theme-light');
-    document.body.classList.add(`theme-${name}`);
-  }
 
 }
