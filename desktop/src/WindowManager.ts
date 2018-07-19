@@ -14,6 +14,15 @@ export class WindowManager {
     return this.mainWin;
   }
 
+  createSimple() {
+    return new BrowserWindow({
+      show: false,
+      webPreferences: {
+        nodeIntegration: false,
+      }
+    });
+  }
+
   private createMainWindow() {
     // gestione finestra
     const winState = <{ bounds: any }>settings.get('window.main.state', {
@@ -30,7 +39,7 @@ export class WindowManager {
       show: false,
       webPreferences: {
         webSecurity: false,
-        nodeIntegration: false,
+        // nodeIntegration: false,
         preload: resolve(join(__dirname, 'preload.js'))
       }
     });

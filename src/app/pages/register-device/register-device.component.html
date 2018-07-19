@@ -1,3 +1,29 @@
-<p>
-  register-device works!
-</p>
+<div fxLayout="column" fxFlex>
+  <!-- <webview #webview
+           fxFlex
+           src="https://my.remarkable.com/generator-device"
+           nodeintegration="false"></webview> -->
+
+  <div fxLayoutAlign="center center" fxFlex>
+    <mat-card style="max-width: 400px">
+      <mat-card-header>
+        <mat-card-title>Device registration</mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        Your device must be registered, please open remarkable website
+        to obtain a new registration code
+        <button mat-button color="primary" (click)="openSite()">open site</button>
+
+        <div class="input-container">
+          <input type="text" placeholder="code" [(ngModel)]="code">
+        </div>
+
+        <div fxLayout="row" fxLayoutAlign="center">
+          <button mat-raised-button color="primary" (click)="register()">confirm</button>
+        </div>
+
+      </mat-card-content>
+    </mat-card>
+  </div>
+
+</div>

@@ -3,6 +3,7 @@ import { Client } from './api/Client';
 import { Storage } from './storage/Storage';
 import { Messages } from './shared';
 import { connect, HasResponseChannel, IpcMessageEvent, settings } from './utils';
+import { Register } from './api/Register';
 
 export class Application {
 
@@ -27,6 +28,16 @@ export class Application {
     connect(Messages.GET_REGISTRATION_STATUS, this.handleRegistrationStatusRequest.bind(this));
     connect(Messages.LOAD_ITEMS, this.handleLoadItems.bind(this));
     connect(Messages.GET_FULL_ITEM, this.handleGetFullItem.bind(this));
+    connect(Messages.OPEN_REMARKABLE_SITE, () => {
+      let rmWin: any = this.wm.createSimple();
+      rmWin.loadURL('https://my.remarkable.com/generator-device');
+      rmWin.on('ready-to-show', () => rmWin.show());
+      rmWin.on('close', () => rmWin = null);
+    });
+    connect(Messages.REGISTER_DEVICE, (event: IpcMessageEvent, code: string) => {
+      const svc = new Register();
+      svc.registerDevice(code);
+    });
 
     this.wm.getMainWindow().loadURL(indexFile);
   }
