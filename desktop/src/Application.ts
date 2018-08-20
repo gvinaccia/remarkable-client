@@ -2,7 +2,7 @@ import { WindowManager } from './WindowManager';
 import { Client } from './api/Client';
 import { Storage } from './storage/Storage';
 import { Messages } from './shared';
-import { connect, HasResponseChannel, IpcMessageEvent, settings } from './utils';
+import { connect, HasResponseChannel, IpcMessageEvent, RegistrationCodeMessage, settings } from './utils';
 import { Register } from './api/Register';
 
 export class Application {
@@ -34,9 +34,18 @@ export class Application {
       rmWin.on('ready-to-show', () => rmWin.show());
       rmWin.on('close', () => rmWin = null);
     });
-    connect(Messages.REGISTER_DEVICE, (event: IpcMessageEvent, code: string) => {
+    connect(Messages.REGISTER_DEVICE, (event: IpcMessageEvent, message: RegistrationCodeMessage) => {
       const svc = new Register();
-      svc.registerDevice(code);
+      try {
+        svc.registerDevice(message.code).then(token => {
+          settings.set('auth.token', token);
+          this.apiClient = new Client(token);
+          this.deviceRegistered = true;
+          event.sender.send(message.respondTo, { success: true });
+        });
+      } catch (e) {
+        event.sender.send(message.respondTo, { success: false });
+      }
     });
 
     this.wm.getMainWindow().loadURL(indexFile);

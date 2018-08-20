@@ -15,3 +15,7 @@ export { IpcMessageEvent } from 'electron';
 export interface HasResponseChannel {
   respondTo: string;
 }
+
+export interface RegistrationCodeMessage extends HasResponseChannel {
+  code: string;
+}

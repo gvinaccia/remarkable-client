@@ -19,6 +19,7 @@ export class DeviceRegisteredGuard implements CanActivate {
           if (r.registered) {
             return true;
           }
+          // noinspection JSIgnoredPromiseFromCall
           this.router.navigate(['/register']);
           return false;
         }));

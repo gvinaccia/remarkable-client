@@ -3,23 +3,24 @@ const uuid = require('uuid4');
 
 export class Register {
 
-  registerDevice(code: string) {
-    const deviceID = uuid();
-    console.log(deviceID, code);
+  // noinspection JSMethodCanBeStatic
+  async registerDevice(code: string): Promise<string> {
+    const deviceId = uuid();
 
-    /*
-    axios.post(
+    const response = await axios.post(
       'https://my.remarkable.com/token/device/new',
       {
         code,
-        deviceDesc: 'rm-client',
-        deviceID: '701c3752-1025-4770-af43-5ddcfa4dabb2'
+        deviceId,
+        deviceDesc: 'desktop-linux',
       },
       {
-        headers: { Authorization: `Bearer ` }
+        headers: { Authorization: `Bearer ` },
+        responseType: 'text',
       }
-    );
-    */
+    ).catch(error => { throw error; });
+
+    return response.data;
   }
 
 }

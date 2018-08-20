@@ -1,5 +1,6 @@
-import { AfterViewInit, Component, ElementRef, HostBinding, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, HostBinding, OnInit } from '@angular/core';
 import { RegistrationService } from '../../services';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-register-device',
@@ -8,14 +9,15 @@ import { RegistrationService } from '../../services';
 })
 export class RegisterDeviceComponent implements OnInit, AfterViewInit {
 
-  @ViewChild('webview')
-  webview: ElementRef;
-
-  @HostBinding('class.fill-parent') fillParent = true;
+  @HostBinding('class.fill-parent')
+  fillParent = true;
 
   code = '';
 
-  constructor(private svc: RegistrationService) { }
+  constructor(
+    private svc: RegistrationService,
+    private router: Router,
+  ) { }
 
   ngOnInit() { }
 
@@ -26,6 +28,11 @@ export class RegisterDeviceComponent implements OnInit, AfterViewInit {
   }
 
   register() {
-    this.svc.registerDevice(this.code);
+    this.svc.registerDevice(this.code).subscribe(registered => {
+      if (registered) {
+        // noinspection JSIgnoredPromiseFromCall
+        this.router.navigateByUrl('/');
+      }
+    });
   }
 }
