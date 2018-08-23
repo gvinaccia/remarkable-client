@@ -5,6 +5,7 @@ const download = require('download');
 const fs = require('fs');
 const path = require('path');
 const unzip =  require('unzipper');
+const Sequelize = require('sequelize');
 
 interface RawStorageItem {
   ID: string;
@@ -23,9 +24,37 @@ interface RawStorageItem {
 
 export class Storage {
 
-  constructor(private basePath: string) { }
+  private models: { Item?: any; } = { };
 
-  sync(items: RawStorageItem[]): Promise<void> {
+  constructor(private basePath: string) {
+    const orm = new Sequelize('null', 'null', 'null', {
+      dialect: 'sqlite',
+      storage: path.join(this.basePath, 'db.sqlite'),
+    });
+
+    this.models.Item = orm.define('item', {
+      id: {
+        type: Sequelize.UUIDV4,
+        primaryKey: true
+      },
+      version: {
+        type: Sequelize.STRING
+      }
+    });
+
+    orm.sync().then(() => {
+      console.log('Schema created');
+    });
+  }
+
+  async sync(items: RawStorageItem[]): Promise<void> {
+
+    // const { Item } = this.models;
+    //
+    // const allItems = await Item.findAll();
+    //
+    // console.log(allItems, items);
+    //
     return Promise.all(items.map(item => download(item.BlobURLGet, this.basePath)))
       .then(() => console.log('All Files Downloaded'), console.error);
   }

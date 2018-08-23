@@ -6,6 +6,7 @@
     "ng": "ng",
     "prestart": "rimraf dist/*",
     "start": "concurrently -k 'yarn run dev-build' 'wait-on dist/index.html && cd desktop && yarn start'",
+    "electron:start": "cd desktop && yarn start",
     "dev-build": "ng build --watch",
     "build": "ng build --prod",
     "test": "ng test",

@@ -7,11 +7,14 @@
   "license": "MIT",
   "scripts": {
     "copyfiles": "ncp package.json ../dist/package.json",
-    "prebuild": "yarn run copyfiles && ln -s $(pwd)/node_modules ../dist/node_modules",
+    "prebuild": "yarn run copyfiles && ln -s $(pwd)/node_modules ../dist/node_modules || true",
     "build": "../node_modules/.bin/tsc -p .",
-    "start": "yarn run build && cd ../dist && ELECTRON_DISABLE_SECURITY_WARNINGS=true ../desktop/node_modules/.bin/electron ."
+    "start": "yarn run build && cd ../dist && ELECTRON_DISABLE_SECURITY_WARNINGS=true ../desktop/node_modules/.bin/electron .",
+    "postinstall": "install-app-deps"
   },
   "devDependencies": {
+    "@types/download": "^6.2.2",
+    "@types/electron-settings": "^3.1.1",
     "@types/graceful-fs": "^4.1.2",
     "concurrently": "^3.5.1",
     "electron": "^2.0.0",
@@ -20,14 +23,14 @@
     "ncp": "^2.0.0"
   },
   "dependencies": {
-    "@types/download": "^6.2.2",
-    "@types/electron-settings": "^3.1.1",
     "axios": "^0.18.0",
     "download": "^7.0.0",
     "electron-settings": "^3.2.0",
     "electron-updater": "^2.21.10",
     "graceful-fs": "^4.1.11",
     "lines-parser": "^0.0.8",
+    "sequelize": "^4.38.0",
+    "sqlite3": "^4.0.2",
     "unzipper": "^0.8.14",
     "uuid4": "^1.0.0"
   }
