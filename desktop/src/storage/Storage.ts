@@ -49,14 +49,25 @@ export class Storage {
 
   async sync(items: RawStorageItem[]): Promise<void> {
 
-    // const { Item } = this.models;
-    //
-    // const allItems = await Item.findAll();
-    //
-    // console.log(allItems, items);
-    //
-    return Promise.all(items.map(item => download(item.BlobURLGet, this.basePath)))
-      .then(() => console.log('All Files Downloaded'), console.error);
+    const { Item } = this.models;
+
+    const syncItem = (item: RawStorageItem) => {
+      return Item.findOrCreate({ where: { id: item.ID } }).spread(
+        (dbItem: any, created: boolean) => {
+          if (created || item.Version !== parseInt(dbItem.version, 10)) {
+            return dbItem.update({
+              version: item.Version
+            }).then(() => download(item.BlobURLGet, this.basePath)
+              .then(() => console.log('FETCHED ' + item.ID)));
+          }
+          console.log('SKIPPED ' + item.ID);
+          return Promise.resolve();
+        });
+    };
+
+    return Promise.all(
+      items.map(syncItem)
+    ).then(() => console.log('Storage in Sync'), console.error);
   }
 
   getItem(itemId: string) {
