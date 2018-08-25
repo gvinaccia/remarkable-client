@@ -1,11 +1,11 @@
 import { RawContentData } from '../shared';
+import { ItemRepository } from './ItemRepository';
 
 const { parse } = require('lines-parser');
 const download = require('download');
 const fs = require('fs');
 const path = require('path');
-const unzip =  require('unzipper');
-const Sequelize = require('sequelize');
+const unzip = require('unzipper');
 
 interface RawStorageItem {
   ID: string;
@@ -24,45 +24,26 @@ interface RawStorageItem {
 
 export class Storage {
 
-  private models: { Item?: any; } = { };
+  private models: { Item?: any; } = {};
 
-  constructor(private basePath: string) {
-    const orm = new Sequelize('null', 'null', 'null', {
-      dialect: 'sqlite',
-      storage: path.join(this.basePath, 'db.sqlite'),
-    });
-
-    this.models.Item = orm.define('item', {
-      id: {
-        type: Sequelize.UUIDV4,
-        primaryKey: true
-      },
-      version: {
-        type: Sequelize.STRING
-      }
-    });
-
-    orm.sync().then(() => {
-      console.log('Schema created');
-    });
-  }
+  constructor(private basePath: string) { }
 
   async sync(items: RawStorageItem[]): Promise<void> {
+    const repo = new ItemRepository(path.join(this.basePath, 'db.sqlite'));
 
-    const { Item } = this.models;
+    await repo.init();
 
-    const syncItem = (item: RawStorageItem) => {
-      return Item.findOrCreate({ where: { id: item.ID } }).spread(
-        (dbItem: any, created: boolean) => {
-          if (created || item.Version !== parseInt(dbItem.version, 10)) {
-            return dbItem.update({
-              version: item.Version
-            }).then(() => download(item.BlobURLGet, this.basePath)
-              .then(() => console.log('FETCHED ' + item.ID)));
-          }
-          console.log('SKIPPED ' + item.ID);
-          return Promise.resolve();
-        });
+    const syncItem = async (item: RawStorageItem) => {
+      const [ dbItem, created ] = await repo.findOrCreate(item.ID);
+
+      if (created || item.Version !== parseInt(dbItem.version, 10)) {
+        return download(item.BlobURLGet, this.basePath)
+          .then(() => repo.updateVersion(item.ID, item.Version))
+          .then(() => console.log('FETCHED ' + item.ID));
+      }
+
+      console.log('SKIPPED ' + item.ID);
+      return Promise.resolve();
     };
 
     return Promise.all(
@@ -77,7 +58,7 @@ export class Storage {
       const filename = path.join(this.basePath, `${itemId}.zip`);
       const outputPath = path.join(this.basePath, itemId);
 
-      if (! fs.existsSync(filename)) {
+      if (!fs.existsSync(filename)) {
         return reject(`file ${filename} does not exist`);
       }
 
@@ -96,19 +77,19 @@ export class Storage {
 
           const linesFilePath = path.join(outputPath, `${itemId}.lines`);
 
-          if (! fs.existsSync(linesFilePath)) {
+          if (!fs.existsSync(linesFilePath)) {
             resolve(parsed);
             return;
           }
 
           const pagesPath = path.join(outputPath, 'pages');
-          if (! fs.existsSync(pagesPath)) {
+          if (!fs.existsSync(pagesPath)) {
             fs.mkdirSync(pagesPath);
           }
 
           // parse lines file
           parse(linesFilePath, pagesPath)
-            .then((paths: {path: string}[]) => resolve({ ...parsed, pages: paths }));
+            .then((paths: { path: string }[]) => resolve({ ...parsed, pages: paths }));
         });
     });
   }

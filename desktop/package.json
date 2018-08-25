@@ -29,8 +29,7 @@
     "electron-updater": "^2.21.10",
     "graceful-fs": "^4.1.11",
     "lines-parser": "^0.0.8",
-    "sequelize": "^4.38.0",
-    "sqlite3": "^4.0.2",
+    "sqlite": "^3.0.0",
     "unzipper": "^0.8.14",
     "uuid4": "^1.0.0"
   }
